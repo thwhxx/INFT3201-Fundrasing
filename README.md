@@ -63,11 +63,10 @@ A comprehensive fundraising management system for McLaughlin University built wi
 4. **Database Setup**
 
    ```bash
-   # Connect to PostgreSQL and create database
-   psql -U postgres
-   CREATE DATABASE inft3201_db;
-   CREATE USER inft3201_admin WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE inft3201_db TO inft3201_admin;
+   cd db
+   touch schema.sql
+
+   "D:\Program Files\PostgreSQL\17\bin\psql.exe" -U inft3201_admin -d inft3201_db -f schema.sql
    ```
 
 5. **Run database tests**
@@ -86,6 +85,8 @@ A comprehensive fundraising management system for McLaughlin University built wi
 ```
 mclaughlin-fundraising/
 ├── src/
+Thw@DESKTOP-V5Q428M MINGW64 /f/DC/inft3201/INFT3201-Fundrasing/mclaughlin-fundraising
+$ git config --global --get-all safe.directory
 │   ├── app/              # Next.js pages and API routes
 │   │   ├── api/          # API endpoints
 │   │   └── ...          # Frontend pages
