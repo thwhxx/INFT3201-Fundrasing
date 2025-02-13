@@ -26,11 +26,11 @@ export async function query<T extends QueryResultRow>(
   try {
     const res = await pool.query<T>(text, params);
     const duration = Date.now() - start;
-    console.log("Executed query", {
-      text,
-      duration,
-      rows: res.rowCount,
-    });
+    // console.log("Executed query", {
+    //   text,
+    //   duration,
+    //   rows: res.rowCount,
+    // });
     return res;
   } catch (error) {
     console.error("Query error:", error);

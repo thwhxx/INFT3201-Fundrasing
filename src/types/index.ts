@@ -1,16 +1,16 @@
-import { QueryResultRow } from "pg";
-
-export interface DonorRow extends QueryResultRow {
-  id: number;
-  name: string;
-  donor_type: "individual" | "private_foundation" | "corporation";
-  email: string | null;
-  phone: string | null;
-  created_at: Date;
-  updated_at: Date;
+export interface Donor {
+  donorId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  donorType: string;
+  organizationName?: string;
+  totalDonations: number;
+  engagementLevel: string;
+  lastContactDate: string;
 }
 
-export interface ProgramRow extends QueryResultRow {
+export interface Program {
   id: number;
   name: string;
   category:
@@ -18,36 +18,15 @@ export interface ProgramRow extends QueryResultRow {
     | "education_research"
     | "undergraduate"
     | "graduate";
-  description: string | null;
+  description: string;
   campus_location: "main" | "downtown" | "east" | "west";
-  created_at: Date;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface DonationRow extends QueryResultRow {
-  id: number;
-  donor_id: number;
-  program_id: number;
-  amount: number;
-  date: Date;
-  committee_member_id: number;
-  notes: string | null;
-  created_at: Date;
-}
-
-export interface CommitteeMemberRow extends QueryResultRow {
-  id: number;
+export interface ProgramFormData {
   name: string;
-  email: string;
-  role: string | null;
-  created_at: Date;
-}
-
-export interface QuarterlyTargetRow extends QueryResultRow {
-  id: number;
-  committee_member_id: number;
-  program_id: number;
-  target_amount: number;
-  year: number;
-  quarter: number;
-  created_at: Date;
+  category: Program["category"];
+  description: string;
+  campus_location: Program["campus_location"];
 }
