@@ -7,20 +7,19 @@ export async function GET() {
     const result = await query<DonorStatsRow>(`
       WITH donor_stats AS (
         SELECT 
-          COUNT(DISTINCT d.donor_id)::text as total_donors,
-          COALESCE(SUM(don.amount)::text, '0') as total_donations,
+          COUNT(DISTINCT d.user_id)::text as total_donors,
+          COALESCE(SUM(d.total_donations)::text, '0') as total_donations,
           CASE 
-            WHEN COUNT(DISTINCT don.donation_id) > 0 
-            THEN (COALESCE(SUM(don.amount), 0) / COUNT(DISTINCT don.donation_id))::text
+            WHEN COUNT(DISTINCT d.user_id) > 0 
+            THEN (COALESCE(SUM(d.total_donations), 0) / COUNT(DISTINCT d.user_id))::text
             ELSE '0'
           END as avg_donation_amount,
           COALESCE(
-            (COUNT(DISTINCT CASE WHEN d.engagement_level = 'High' THEN d.donor_id END) * 100.0 / 
-            NULLIF(COUNT(DISTINCT d.donor_id), 0))::text,
+            (COUNT(DISTINCT CASE WHEN d.engagement_level = 'High' THEN d.user_id END) * 100.0 / 
+            NULLIF(COUNT(DISTINCT d.user_id), 0))::text,
             '0'
           ) as active_engagement_percentage
-        FROM donors d
-        LEFT JOIN donations don ON d.donor_id = don.donor_id
+        FROM Donors d
       )
       SELECT 
         total_donors,
@@ -30,7 +29,7 @@ export async function GET() {
       FROM donor_stats
     `);
 
-    if (result.rows.length === 0) {
+    if (!result.rows?.[0]) {
       return NextResponse.json({
         totalDonors: 0,
         totalDonations: 0,
